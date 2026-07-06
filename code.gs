@@ -1,94 +1,196 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StockFlow - Enterprise Inventory & Allotment System</title>
-    <!-- FontAwesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Google Fonts: Inter & Space Grotesk -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script>
-      window.addEventListener('error', function(e) {
-        console.error("Global captured error:", e);
-        var errDiv = document.getElementById('error-debug-console');
-        if (!errDiv) {
-          errDiv = document.createElement('div');
-          errDiv.id = 'error-debug-console';
-          errDiv.style.position = 'fixed';
-          errDiv.style.bottom = '20px';
-          errDiv.style.left = '20px';
-          errDiv.style.right = '20px';
-          errDiv.style.background = '#fef2f2';
-          errDiv.style.color = '#991b1b';
-          errDiv.style.padding = '20px';
-          errDiv.style.border = '2px solid #ef4444';
-          errDiv.style.borderRadius = '12px';
-          errDiv.style.zIndex = '999999';
-          errDiv.style.fontFamily = '"JetBrains Mono", monospace';
-          errDiv.style.fontSize = '12px';
-          errDiv.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
-          errDiv.style.maxHeight = '50vh';
-          errDiv.style.overflowY = 'auto';
-          document.body.appendChild(errDiv);
-        }
-        var msg = document.createElement('div');
-        msg.style.marginBottom = '8px';
-        msg.innerHTML = '<strong>Runtime Error:</strong> ' + e.message + '<br/><span style="color:#4b5563;">File: ' + e.filename + ':' + e.lineno + ':' + e.colno + '</span>';
-        errDiv.appendChild(msg);
-      });
-      window.addEventListener('unhandledrejection', function(e) {
-        console.error("Global captured promise rejection:", e);
-        var errDiv = document.getElementById('error-debug-console');
-        if (!errDiv) {
-          errDiv = document.createElement('div');
-          errDiv.id = 'error-debug-console';
-          errDiv.style.position = 'fixed';
-          errDiv.style.bottom = '20px';
-          errDiv.style.left = '20px';
-          errDiv.style.right = '20px';
-          errDiv.style.background = '#fef2f2';
-          errDiv.style.color = '#991b1b';
-          errDiv.style.padding = '20px';
-          errDiv.style.border = '2px solid #ef4444';
-          errDiv.style.borderRadius = '12px';
-          errDiv.style.zIndex = '999999';
-          errDiv.style.fontFamily = '"JetBrains Mono", monospace';
-          errDiv.style.fontSize = '12px';
-          errDiv.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
-          errDiv.style.maxHeight = '50vh';
-          errDiv.style.overflowY = 'auto';
-          document.body.appendChild(errDiv);
-        }
-        var msg = document.createElement('div');
-        msg.style.marginBottom = '8px';
-        msg.innerHTML = '<strong>Unhandled Promise Rejection:</strong> ' + (e.reason ? (e.reason.message || e.reason) : 'Unknown reason');
-        errDiv.appendChild(msg);
-      });
-    </script>
-  </head>
-  <body class="bg-slate-50/50 text-slate-800 antialiased font-sans">
-    <div id="root">
-      <!-- High-fidelity elegant material preloader (replaced instantly when React mounts) -->
-      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: 'Space Grotesk', sans-serif; background-color: #f8fafc;">
-        <div style="position: relative; width: 64px; height: 64px;">
-          <div style="position: absolute; border: 4px solid #e2e8f0; border-radius: 50%; width: 100%; height: 100%;"></div>
-          <div style="position: absolute; border: 4px solid #0f172a; border-left-color: transparent; border-radius: 50%; width: 100%; height: 100%; animate: spin 1s linear infinite; animation: spin 1s linear infinite;"></div>
-        </div>
-        <h1 style="font-size: 1.25rem; font-weight: 700; color: #0f172a; margin-top: 1.5rem; letter-spacing: -0.025em;">StockFlow</h1>
-        <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem; font-weight: 500;">Central Store Material Register & Allotment System</p>
-        <p style="font-size: 0.7rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; margin-top: 2rem;">Loading safe assets...</p>
-        <style>
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        </style>
-      </div>
-    </div>
-    <script type="module" src="./src/main.tsx"></script>
-  </body>
-</html>
+/**
+ * 📊 StockFlow - Enterprise Central Store & Material Allotment Register
+ * Google Apps Script Web App Code (Code.gs)
+ * 
+ * Provides robust Google Sheets API endpoints for complete data persistence
+ * of Inventory, Allotments, Procurements, Scrap, and System Logs.
+ */
 
+// 1. WEB APP SERVICE HANDLER
+function doGet(e) {
+  // Serves the index.html with iframe framing protection lifted for embedding
+  return HtmlService.createTemplateFromFile('index')
+    .evaluate()
+    .setTitle('StockFlow - ITI Material Allotment & Tracking System')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// Include HTML components/css if separated (used in multi-file GAS layouts)
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+// 2. DATABASE INITIALIZATION & SHEET MANAGEMENT
+function getOrCreateDatabase() {
+  var dbs = DriveApp.getFilesByName("StockFlow_Database");
+  var ss;
+  if (dbs.hasNext()) {
+    ss = SpreadsheetApp.open(dbs.next());
+  } else {
+    ss = SpreadsheetApp.create("StockFlow_Database");
+    
+    // Create initial schemas
+    var inventorySheet = ss.insertSheet("Inventory");
+    inventorySheet.appendRow(["ID", "Name", "Category", "Subcategory", "SKU", "Quantity", "Unit", "LowStockThreshold", "AvgUnitPrice", "ShelfLocation", "Brand", "GeMCategory", "PurchaseDate", "ExpiryDate", "CreatedDate"]);
+    
+    var allotmentsSheet = ss.insertSheet("Allotments");
+    allotmentsSheet.appendRow(["ID", "RequesterName", "ItemsJSON", "Purpose", "Status", "Level1Status", "Level2Status", "Level3Status", "CreatedDate"]);
+    
+    var procurementSheet = ss.insertSheet("Procurements");
+    procurementSheet.appendRow(["ID", "ItemName", "Quantity", "Unit", "Category", "EstimatedCost", "Purpose", "Status", "Urgency", "RequestedBy", "ApprovedBy", "Comments", "CreatedDate"]);
+    
+    var scrapSheet = ss.insertSheet("Scrap");
+    scrapSheet.appendRow(["ID", "ItemName", "Quantity", "Unit", "Category", "DisposedDate", "Valuation", "Method", "ApprovedBy", "Status", "Reason", "Notes"]);
+    
+    var logsSheet = ss.insertSheet("Logs");
+    logsSheet.appendRow(["ID", "Timestamp", "User", "Role", "Action", "Details", "Type"]);
+    
+    // Delete default "Sheet1"
+    var defaultSheet = ss.getSheetByName("Sheet1");
+    if (defaultSheet) ss.deleteSheet(defaultSheet);
+  }
+  return ss;
+}
+
+// 3. COLLECTION READ API
+function readCollection(sheetName) {
+  try {
+    var ss = getOrCreateDatabase();
+    var sheet = ss.getSheetByName(sheetName);
+    if (!sheet) return JSON.stringify([]);
+    
+    var data = sheet.getDataRange().getValues();
+    if (data.length <= 1) return JSON.stringify([]);
+    
+    var headers = data[0];
+    var results = [];
+    
+    for (var i = 1; i < data.length; i++) {
+      var row = data[i];
+      var obj = {};
+      for (var j = 0; j < headers.length; j++) {
+        var key = headers[j];
+        // CamelCase the headers: "LowStockThreshold" -> "lowStockThreshold"
+        var formattedKey = key.charAt(0).toLowerCase() + key.slice(1);
+        var val = row[j];
+        
+        // Parse JSON fields automatically
+        if (formattedKey === 'itemsJSON' || formattedKey === 'items') {
+          try {
+            obj['items'] = JSON.parse(val);
+          } catch(e) {
+            obj['items'] = [];
+          }
+        } else {
+          obj[formattedKey] = val;
+        }
+      }
+      results.push(obj);
+    }
+    return JSON.stringify(results);
+  } catch (error) {
+    return JSON.stringify({ error: error.message });
+  }
+}
+
+// 4. COLLECTION BULK SAVE/SYNC API
+function saveCollection(sheetName, jsonArray) {
+  try {
+    var list = JSON.parse(jsonArray);
+    var ss = getOrCreateDatabase();
+    var sheet = ss.getSheetByName(sheetName);
+    if (!sheet) return JSON.stringify({ error: "Sheet not found" });
+    
+    // Clear and rebuild headers
+    var data = sheet.getDataRange().getValues();
+    var headers = data[0];
+    
+    sheet.clearContents();
+    sheet.appendRow(headers);
+    
+    for (var i = 0; i < list.length; i++) {
+      var item = list[i];
+      var row = [];
+      for (var j = 0; j < headers.length; j++) {
+        var key = headers[j];
+        var formattedKey = key.charAt(0).toLowerCase() + key.slice(1);
+        
+        var val = item[formattedKey];
+        if (formattedKey === 'itemsJSON' || formattedKey === 'items') {
+          val = JSON.stringify(item['items'] || item['itemsJSON'] || []);
+        } else if (val === undefined || val === null) {
+          val = "";
+        }
+        row.push(val);
+      }
+      sheet.appendRow(row);
+    }
+    return JSON.stringify({ success: true, count: list.length });
+  } catch (error) {
+    return JSON.stringify({ error: error.message });
+  }
+}
+
+// 5. INDIVIDUAL WRITE/UPDATE HANDLERS
+function updateItemInCollection(sheetName, itemJson) {
+  try {
+    var item = JSON.parse(itemJson);
+    var ss = getOrCreateDatabase();
+    var sheet = ss.getSheetByName(sheetName);
+    if (!sheet) return JSON.stringify({ error: "Sheet not found" });
+    
+    var data = sheet.getDataRange().getValues();
+    var headers = data[0];
+    
+    var foundRowIndex = -1;
+    for (var i = 1; i < data.length; i++) {
+      if (data[i][0] == item.id) {
+        foundRowIndex = i + 1; // 1-indexed for Sheets
+        break;
+      }
+    }
+    
+    var rowValues = [];
+    for (var j = 0; j < headers.length; j++) {
+      var key = headers[j];
+      var formattedKey = key.charAt(0).toLowerCase() + key.slice(1);
+      
+      var val = item[formattedKey];
+      if (formattedKey === 'itemsJSON' || formattedKey === 'items') {
+        val = JSON.stringify(item['items'] || item['itemsJSON'] || []);
+      } else if (val === undefined || val === null) {
+        val = "";
+      }
+      rowValues.push(val);
+    }
+    
+    if (foundRowIndex > -1) {
+      sheet.getRange(foundRowIndex, 1, 1, rowValues.length).setValues([rowValues]);
+    } else {
+      sheet.appendRow(rowValues);
+    }
+    return JSON.stringify({ success: true, id: item.id });
+  } catch (error) {
+    return JSON.stringify({ error: error.message });
+  }
+}
+
+// 6. WRAPPERS TO MATCH STOCKFLOW API EXPECTATIONS
+function getInventory() { return readCollection("Inventory"); }
+function getAllotments() { return readCollection("Allotments"); }
+function getProcurements() { return readCollection("Procurements"); }
+function getScrap() { return readCollection("Scrap"); }
+function getLogs() { return readCollection("Logs"); }
+
+function saveInventoryList(json) { return saveCollection("Inventory", json); }
+function saveAllotmentsList(json) { return saveCollection("Allotments", json); }
+function saveProcurementsList(json) { return saveCollection("Procurements", json); }
+function saveScrapList(json) { return saveCollection("Scrap", json); }
+function saveLogsList(json) { return saveCollection("Logs", json); }
+
+function updateInventoryItem(json) { return updateItemInCollection("Inventory", json); }
+function saveAllotmentRequest(json) { return updateItemInCollection("Allotments", json); }
+function updateProcurementRequest(json) { return updateItemInCollection("Procurements", json); }
+function updateScrapRecord(json) { return updateItemInCollection("Scrap", json); }
+function addSystemLog(json) { return updateItemInCollection("Logs", json); }
