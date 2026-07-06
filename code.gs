@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StockFlow - Enterprise Inventory & Allotment System</title>
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Google Fonts: Inter & Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+      window.addEventListener('error', function(e) {
+        console.error("Global captured error:", e);
+        var errDiv = document.getElementById('error-debug-console');
+        if (!errDiv) {
+          errDiv = document.createElement('div');
+          errDiv.id = 'error-debug-console';
+          errDiv.style.position = 'fixed';
+          errDiv.style.bottom = '20px';
+          errDiv.style.left = '20px';
+          errDiv.style.right = '20px';
+          errDiv.style.background = '#fef2f2';
+          errDiv.style.color = '#991b1b';
+          errDiv.style.padding = '20px';
+          errDiv.style.border = '2px solid #ef4444';
+          errDiv.style.borderRadius = '12px';
+          errDiv.style.zIndex = '999999';
+          errDiv.style.fontFamily = '"JetBrains Mono", monospace';
+          errDiv.style.fontSize = '12px';
+          errDiv.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+          errDiv.style.maxHeight = '50vh';
+          errDiv.style.overflowY = 'auto';
+          document.body.appendChild(errDiv);
+        }
+        var msg = document.createElement('div');
+        msg.style.marginBottom = '8px';
+        msg.innerHTML = '<strong>Runtime Error:</strong> ' + e.message + '<br/><span style="color:#4b5563;">File: ' + e.filename + ':' + e.lineno + ':' + e.colno + '</span>';
+        errDiv.appendChild(msg);
+      });
+      window.addEventListener('unhandledrejection', function(e) {
+        console.error("Global captured promise rejection:", e);
+        var errDiv = document.getElementById('error-debug-console');
+        if (!errDiv) {
+          errDiv = document.createElement('div');
+          errDiv.id = 'error-debug-console';
+          errDiv.style.position = 'fixed';
+          errDiv.style.bottom = '20px';
+          errDiv.style.left = '20px';
+          errDiv.style.right = '20px';
+          errDiv.style.background = '#fef2f2';
+          errDiv.style.color = '#991b1b';
+          errDiv.style.padding = '20px';
+          errDiv.style.border = '2px solid #ef4444';
+          errDiv.style.borderRadius = '12px';
+          errDiv.style.zIndex = '999999';
+          errDiv.style.fontFamily = '"JetBrains Mono", monospace';
+          errDiv.style.fontSize = '12px';
+          errDiv.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+          errDiv.style.maxHeight = '50vh';
+          errDiv.style.overflowY = 'auto';
+          document.body.appendChild(errDiv);
+        }
+        var msg = document.createElement('div');
+        msg.style.marginBottom = '8px';
+        msg.innerHTML = '<strong>Unhandled Promise Rejection:</strong> ' + (e.reason ? (e.reason.message || e.reason) : 'Unknown reason');
+        errDiv.appendChild(msg);
+      });
+    </script>
+  </head>
+  <body class="bg-slate-50/50 text-slate-800 antialiased font-sans">
+    <div id="root">
+      <!-- High-fidelity elegant material preloader (replaced instantly when React mounts) -->
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: 'Space Grotesk', sans-serif; background-color: #f8fafc;">
+        <div style="position: relative; width: 64px; height: 64px;">
+          <div style="position: absolute; border: 4px solid #e2e8f0; border-radius: 50%; width: 100%; height: 100%;"></div>
+          <div style="position: absolute; border: 4px solid #0f172a; border-left-color: transparent; border-radius: 50%; width: 100%; height: 100%; animate: spin 1s linear infinite; animation: spin 1s linear infinite;"></div>
+        </div>
+        <h1 style="font-size: 1.25rem; font-weight: 700; color: #0f172a; margin-top: 1.5rem; letter-spacing: -0.025em;">StockFlow</h1>
+        <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem; font-weight: 500;">Central Store Material Register & Allotment System</p>
+        <p style="font-size: 0.7rem; color: #94a3b8; font-family: 'JetBrains Mono', monospace; margin-top: 2rem;">Loading safe assets...</p>
+        <style>
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
+      </div>
+    </div>
+    <script type="module" src="./src/main.tsx"></script>
+  </body>
+</html>
+
