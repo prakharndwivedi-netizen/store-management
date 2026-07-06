@@ -30,18 +30,32 @@ jobs:
         with:
           node-version: 20
 
-      - name: Fix file casing for case-sensitive filesystems
+      - name: Auto-detect Project Directory and Build
         run: |
-          if [ -f src/Main.tsx ]; then
-            echo "Found src/Main.tsx, renaming to src/main.tsx"
-            mv src/Main.tsx src/main.tsx
+          # Find the folder containing package.json (excluding node_modules)
+          PROJECT_DIR=$(find . -name "package.json" -not -path "*/node_modules/*" | head -n 1 | xargs dirname)
+          echo "Detected project directory: $PROJECT_DIR"
+          
+          # Navigate to project directory
+          cd "$PROJECT_DIR"
+          
+          # Fix casing of src/Main.tsx or src/main.tsx if needed
+          if [ -d src ]; then
+            if [ -f src/Main.tsx ]; then
+              echo "Fixing file casing: src/Main.tsx -> src/main.tsx"
+              mv src/Main.tsx src/main.tsx
+            fi
           fi
-
-      - name: Install Project Dependencies
-        run: npm install
-
-      - name: Build Production Assets
-        run: npm run build
+          
+          # Install dependencies and build
+          npm install
+          npm run build
+          
+          # If the project is in a subdirectory, copy dist folder to the workspace root
+          if [ "$PROJECT_DIR" != "." ]; then
+            echo "Copying built dist folder to workspace root"
+            cp -r dist "$GITHUB_WORKSPACE/"
+          fi
 
       - name: Setup Pages Configuration
         uses: actions/configure-pages@v4
