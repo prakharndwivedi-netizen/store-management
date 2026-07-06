@@ -9,14 +9,14 @@
 // 1. WEB APP SERVICE HANDLER
 function doGet(e) {
   // Serves the index.html with iframe framing protection lifted for embedding
-  return HtmlService.createTemplateFromFile('index')
+  return HtmlService.createTemplateFromFile('Index')
     .evaluate()
     .setTitle('StockFlow - ITI Material Allotment & Tracking System')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-// Include HTML components/css if separated (used in multi-file GAS layouts)
+// Include HTML components/css if separated
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
@@ -71,7 +71,7 @@ function readCollection(sheetName) {
       var obj = {};
       for (var j = 0; j < headers.length; j++) {
         var key = headers[j];
-        // CamelCase the headers: "LowStockThreshold" -> "lowStockThreshold"
+        // CamelCase headers: "LowStockThreshold" -> "lowStockThreshold"
         var formattedKey = key.charAt(0).toLowerCase() + key.slice(1);
         var val = row[j];
         
